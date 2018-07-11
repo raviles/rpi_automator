@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+"""
+ Runner for EventDispatcher class
+ Author: Ryan Aviles
+
+ Usage: rpi_automator [-h] [--config filename]
+                           [--log_config logging config file]
+                           [--run_once name]
+
+ optional arguments:
+   -h, --help            show this help message and exit
+  --config filename     Location of configuraition file
+  --log_config logging config file
+                        Location of logging configuraition file
+  --module module       Run a single named module instance and exit
+
+"""
+
+from rpi_automator import EventDispatcher
+
+import logging
+from logging.config import fileConfig
+import argparse
+import os
+
+logger = logging.getLogger()
+
+
+def setup_command_arguments():
+    parser = argparse.ArgumentParser(description='Event Processor')
+    parser.add_argument('--config', metavar='filename', type=str, help='Location of configuraition file', dest='config', default='config/config.json')
+    parser.add_argument('--log_config', metavar='logging config file', type=str, help='Location of logging configuraition file', dest='logging_config', default='config/logging.ini')
+    parser.add_argument('--module', metavar='module', type=str, help='Run a single named module instance and exit', dest='module', default=None)
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+
+    args = setup_command_arguments()
+
+    if os.path.exists(args.logging_config):
+        fileConfig(args.logging_config)
+
+    controller = EventDispatcher.EventDispatcher()
+    controller.init_from_filename(args.config)
+
+    if args.module is not None:
+        controller.run(args.module)
+    else:
+        controller.start()

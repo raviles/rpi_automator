@@ -1,0 +1,29 @@
+{
+
+  "datastore" : {
+    "type" : "DynamoDBDataStore",
+    "table" : "asdf"
+
+
+
+  },
+
+  "modules" : [
+    {
+      "type" : "PICamera",
+      "name" : "c1",
+      "width" : 1080,
+      "height": 720,
+      "cron" : "*/1 * * * *",
+      "enabled" : true
+    },
+    {
+      "type" : "S3Uploader",
+      "name" : "s3",
+      "bucket_name" : "events_test",
+      "base_url" : "me.com",
+      "subscribed_to" : ["c1"],
+      "enabled" : true
+    }
+  ]
+}
