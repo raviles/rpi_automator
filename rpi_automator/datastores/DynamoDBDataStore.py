@@ -6,6 +6,7 @@ logger = logging.getLogger()
 
 
 class DynamoDBDataStore(DataStore):
+    """ Assumes AWS credentials are set via environment variable, local configuration, or iam policy """
 
     def __init__(self, table=None, endpoint_url=None, region='us-east-1', type=None):
         assert table
