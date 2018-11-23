@@ -1,4 +1,4 @@
-# Raspberry Pi Automator
+## Raspberry Pi Automator
 
 An extendable, event-driven automation tool for Raspberry Pi GPIO components.  
 
@@ -15,23 +15,31 @@ rpi_automator --config /<path to your config.json>
 ```
 Will block until SIGTERM is received.
 
-# Usage
+## Usage
 The automator can be run in two different ways:
 
-1) Using code
+**1) Using code**
 
 ```python
-cam = PICamera(name='backyard_light', width=640, height=480, cron="*/15 * * * *")
-
+cam = PICamera(name='backyard_cam', width=640, height=480, cron="*/15 5-17 * * *")
 s3 = S3Uploader(bucket_name='my-house-images', base_url='http://d1w07f3h9z0.cloudfront.net')
-s3.subscribed_to((cam,))
 
-button = ButtonDetector(name='redButton', pin=4)
-light_relay = RelaySwitch(name='outLight', pin=8)
-light_relay.subscribed_to((cam, button))
+cam.then(s3)
 
-BaseModule.scheduler.start()
+button = ButtonDetector(name='red_button', pin=4)
+light_relay = RelaySwitch(name='backyard_light', pin=8)
+
+light_relay.then(cam)
+button.then(light_relay)
+
+BaseModule.start()
 ```
+
+The above code will do the following:
+> Take a photo and upload to an S3 bucket every 15 minutes from 5am to 5pm each day.
+
+> If the red button is pushed, turn on the light and then take a photo.
+
     
 A `DataStore` implementation can be optionally set to send each module result to a backend storage.  New data stores can be 
     created by sub-classing `DataStore`.
@@ -42,7 +50,7 @@ BaseModule.datastore = DynamoDBDataStore(table='house_data')
 
 See [rpi_automator_web](https://github.com/raviles/rpi_automator_web) for DynamoDB setup and data visualizer.
 
-2) Using a configuration file
+**2) Using a configuration file**
 
 ```javascript
 {
@@ -57,6 +65,7 @@ See [rpi_automator_web](https://github.com/raviles/rpi_automator_web) for Dynamo
     },
     {
       "type" : "modules/S3Uploader",
+      "bucket_name" : "my-cam-images",
       "name" : "s3",
       "subscribed_to" : ["piCam1"],
       "enabled" : true
@@ -128,13 +137,13 @@ uploaded to an S3 bucket
 Multiple instances of each module can be configured for different purposes e.g. several instances of `RelaySwitch`
 for different lights, each operating on their own GPIO pin.
 
-### Custom Modules
+## Custom Modules
 Create new modules by sub-classing [`modules.BaseModule`](rpi_automator/modules/BaseModule.py). The directory
 containing the source code should be added to $PYTHONPATH (or `sys.path`).
 
 Custom datastores can also be created by subclassing [`datastores.DataStore`](rpi_automator.datastores.DataStore.py).
 
-# Running Tests
+## Running Tests
 
 ```commandline
 cd rpi_automator
