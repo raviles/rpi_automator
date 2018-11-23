@@ -8,6 +8,8 @@ import logging
 
 logger = logging.getLogger()
 
+DEFAULT_S3_BASE = "https://{}.s3.amazonaws.com"
+
 
 class S3Uploader(BaseModule):
     """
@@ -31,7 +33,7 @@ class S3Uploader(BaseModule):
     def __init__(self, bucket_name=None, base_url=None, **kwargs):
         BaseModule.__init__(self, **kwargs)
         self.bucket_name = bucket_name
-        self.base_url = base_url
+        self.base_url = base_url if base_url else DEFAULT_S3_BASE.format(bucket_name)
         self.client = boto3.client('s3')
 
     def run(self, module_result):
