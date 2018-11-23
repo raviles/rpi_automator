@@ -14,7 +14,3 @@ class ModuleResult:
     def getTime(clz):
         return datetime.datetime.now()
 
-    def then(self, module):
-        """ Allows for chaining the result of one module to the next
-        """
-        return module.run(self)

@@ -24,6 +24,8 @@ class EventControllerTests(unittest.TestCase):
 
         PICamera.capture = MagicMock(return_value='tests/resources/python.png')
 
+        BaseModule.datastore = None
+
     def testRelayDispatch(self):
 
         relay = RelaySwitch(name='light', pin=18, value=1, value_toggle=0, duration=2)
@@ -79,6 +81,21 @@ class EventControllerTests(unittest.TestCase):
 
         # TODO assert dispatchers wired correctly
 
+    def testThen(self):
+
+        cam = PICamera(width=640, height=480)
+        s3 = S3Uploader(bucket_name='events_test', base_url='me.com')
+        cam.then(s3)
+
+        class T(BaseModule):
+            pass
+
+        t = T()
+        t.run = MagicMock()
+        s3.then(t)
+        cam.dispatch()
+
+        self.assertTrue(t.run.called)
 
 
 if __name__ == '__main__':

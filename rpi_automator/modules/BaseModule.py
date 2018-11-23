@@ -88,6 +88,14 @@ class BaseModule(object):
                                      next_run_time=run_at_dt,
                                      id=name)
 
+    def then(self, *modules):
+        """ Allows for chaining the result of one module to the next
+        """
+        for m in modules:
+            return m.subscribe_to((self,))
+
+        return self
+
     @staticmethod
     def _broadcast(module_result):
         if not BaseModule.datastore:
