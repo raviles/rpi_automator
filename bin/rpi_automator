@@ -28,8 +28,8 @@ logger = logging.getLogger()
 
 def setup_command_arguments():
     parser = argparse.ArgumentParser(description='Event Processor')
-    parser.add_argument('--config', metavar='filename', type=str, help='Location of configuraition file', dest='config', default='config/config.json')
-    parser.add_argument('--log_config', metavar='logging config file', type=str, help='Location of logging configuraition file', dest='logging_config', default='config/logging.ini')
+    parser.add_argument('--config', metavar='filename', type=str, help='Location of configuraition file', dest='config', default='/etc/rpi_automator/config.json')
+    parser.add_argument('--log_config', metavar='logging config file', type=str, help='Location of logging configuraition file', dest='logging_config', default='/etc/rpi_automator/logging.ini')
     parser.add_argument('--module', metavar='module', type=str, help='Run a single named module instance and exit', dest='module', default=None)
     return parser.parse_args()
 
