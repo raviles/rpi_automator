@@ -41,7 +41,8 @@ class S3Uploader(BaseModule):
         logger.debug("S3Uploader(%s): Uploading %s", self.name, module_result.data.file_path)
 
         now = datetime.now()
-        key = now.strftime("%Y-%m-%d") + '/' + now.strftime("%s") + '-' + module_result.data.name
+        key = "{}/{}/{}-{}".format(now.strftime("%Y-%m-%d"), module_result.module.name, now.strftime("%s"),
+                                   module_result.data.name)
         self.client.upload_file(module_result.data.file_path, self.bucket_name, key)
 
         url = self.base_url + '/' + self.bucket_name + '/' + key
