@@ -62,7 +62,7 @@ class BaseModule(object):
                 modules(list): list of modules or string names of modules
         """
         for m in modules:
-            if type(m) is BaseModule:
+            if isinstance(m, BaseModule):
                 m = m.name
             signal = m + '-signal'
             logger.debug("Unsubscribing %s to signal %s", self.name, signal)
@@ -110,7 +110,6 @@ class BaseModule(object):
     def start():
         assert BaseModule.scheduler
         BaseModule.scheduler.start()
-
 
     def __str__(self):
         return "{}({})".format(self.type, self.name)
