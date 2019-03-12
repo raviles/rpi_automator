@@ -29,8 +29,8 @@ class ButtonDetector(BaseModule):
         BaseModule.__init__(self, **kwargs)
         self.pin = pin
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.pin, GPIO.IN)
-        GPIO.add_event_detect(self.pin, GPIO.FALLING, lambda pin: self.dispatch())
+        GPIO.setup(self.pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.add_event_detect(self.pin, GPIO.FALLING, lambda pin: self.dispatch(), bouncetime=1500)
 
     def run(self, module_result):
         """
