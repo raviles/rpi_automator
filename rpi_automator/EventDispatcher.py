@@ -4,11 +4,25 @@ from util.ModuleUtils import load_module
 
 import logging
 import json
+import atexit
 from apscheduler.schedulers.background import BlockingScheduler
+
+try:
+    from RPi import GPIO
+except ImportError:
+    GPIO = None
 
 logger = logging.getLogger()
 
 DEFAULT_MODULES_PATH = 'rpi_automator/modules'
+
+
+def exit_gracefully():
+    if GPIO:
+        GPIO.cleanup()
+
+atexit.register(exit_gracefully)
+
 
 class EventDispatcher:
 
