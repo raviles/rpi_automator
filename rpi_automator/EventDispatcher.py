@@ -1,6 +1,6 @@
-from datastores.DataStore import DataStore
-from modules.BaseModule import BaseModule
-from util.ModuleUtils import load_module
+from rpi_automator.datastores.DataStore import DataStore
+from rpi_automator.modules.BaseModule import BaseModule
+from rpi_automator.util.ModuleUtils import load_module
 
 import logging
 import json
