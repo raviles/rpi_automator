@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="rpi_automator",
-    version="0.0.3",
+    version="0.0.4",
     author="Ryan Aviles",
     author_email="ryan.aviles@gmail.com",
     description="Raspberry Pi automation tool",
@@ -18,7 +18,7 @@ setuptools.setup(
         'bin/rpi_automator'
     ],
     classifiers=[
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: Other OS"
     ],
