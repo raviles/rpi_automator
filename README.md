@@ -131,7 +131,7 @@ rpi_automator --config /<path to your config.json>
 - [CV2Camera](rpi_automator/modules/CV2Camera.py): USB-based web cam
 - [RelaySwitch](rpi_automator/modules/RelaySwitch.py): Relay switch controlling power to a connected device
 - [TempHumiditySensor](rpi_automator/modules/TempHumiditySensor.py): Reads data from a DHT22 temperature/humidity sensor
-- [VeSyncOutlet](rpi_automator/modules/VeSyncOutlet.py): Controls Etekcity VeSync smart outlets
+- [VeSyncOutlet](rpi_automator/modules/VeSyncOutlet.py): Controls [Etekcity/VeSync](https://smile.amazon.com/Etekcity-Voltson-Outlet-Monitoring-Required/dp/B074GVPYPY) smart outlets
 - [S3Uploader](rpi_automator/modules/S3Uploader.py): Modules that generate files can return LocalFileData and get 
 uploaded to an S3 bucket
 
