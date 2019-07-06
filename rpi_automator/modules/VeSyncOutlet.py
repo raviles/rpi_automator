@@ -24,8 +24,8 @@ class VeSyncOutlet(BaseModule):
                      Name of the device in the VeSync app
         duration : int
                    Duration in seconds, toggles between value and value_toggle. Optional.
-        initial_on_off: string
-                        First trigger value of 'on' or 'off'
+        states: list
+                List of states. Default: ["on", "off"]
         name : string
                Unique name describing this instance
         enabled : boolean
@@ -36,36 +36,37 @@ class VeSyncOutlet(BaseModule):
                cron-style syntax. Optional.
     """
 
-    def __init__(self, vesync_name, duration, initial_on_off, **kwargs):
+    manager = None
+
+    def __init__(self, vesync_name, duration=None, states=["on", "off"], **kwargs):
         BaseModule.__init__(self, **kwargs)
 
         self.vesync_name = vesync_name
         self.duration = duration
-        self.next_value = self.value_initial = initial_on_off
+        self.next_idx = 0
+        self.states = states
 
-        self.manager = VeSync(os.environ['VESYNC_USERNAME'], os.environ['VESYNC_PASSWORD'])
-        self.manager.login()
-        self.manager.update()
+        if not VeSyncOutlet.manager:
+            VeSyncOutlet.manager = VeSync(os.environ['VESYNC_USERNAME'], os.environ['VESYNC_PASSWORD'])
+            VeSyncOutlet.manager.login()
+            VeSyncOutlet.manager.update()
 
-        self.device = next( filter( lambda x:x.device_name==vesync_name, self.manager.outlets), None)
+        self.device = next( filter( lambda x:x.device_name==vesync_name, VeSyncOutlet.manager.outlets), None)
         if self.device is None:
-            raise Exception("Unable to find Vesync device " + vesync_name)
+            raise Exception("Unable to find VeSync device " + vesync_name)
 
 
     def run(self, module_result):
 
-        current_value = self.next_value
-        if self.next_value == 'on':
-            self.device.turn_on()
-            self.next_value = 'off'
-        else:
-            self.device.turn_off()
-            self.next_value = 'on'
+        current_value = self.states[self.next_idx]
+        getattr(self.device, 'turn_' + current_value)()
 
+        self.next_idx = (self.next_idx + 1) % len(self.states) # rotate next_idx around `states`
+        next_value = self.states[self.next_idx]
         
         result = ModuleResult(self)
         # if we're set to change values in 'duration' seconds
-        if self.next_value != self.value_initial and self.duration:
+        if next_value != self.states[0] and self.duration:
             duration = int(self.duration) # seconds
             run_at = datetime.now() + timedelta(seconds=duration)
 
