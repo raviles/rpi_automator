@@ -17,6 +17,7 @@ class VeSyncOutlet(BaseModule):
 
     """
         Module interacting with VeSync-supported (Etekcity) smart outlets (https://smile.amazon.com/s?k=vesync+etekcity). 
+        Requires env variables for authentication: VESYNC_USERNAME and VESYNC_PASSWORD
         Configuration Parameters
         ----------
         type : "VeSyncOutlet"
