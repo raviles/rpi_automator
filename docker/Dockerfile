@@ -15,7 +15,7 @@ WORKDIR /rpi_automator
 RUN pip3 install -r requirements.txt
 
 ADD bin/rpi_automator /usr/local/bin/
-ADD etc/rpi_automator /etc/
+ADD etc/rpi_automator /etc/rpi_automator
 ENV PYTHONPATH /rpi_automator
-CMD [ "python", "/usr/local/bin/rpi_automator"]
 
+ENTRYPOINT [ "python", "/usr/local/bin/rpi_automator"]
