@@ -9,9 +9,9 @@
 
  optional arguments:
    -h, --help            show this help message and exit
-  --config filename     Location of configuraition file
+  --config filename     Location of configuraition file. Default /etc/rpi_automator/config.json
   --log_config logging config file
-                        Location of logging configuraition file
+                        Location of logging configuration file. Default /etc/rpi_automator/logging.ini
   --module module       Run a single named module instance and exit
 
 """
