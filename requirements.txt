@@ -1,8 +1,10 @@
+wheel==0.33.4
 apscheduler==3.5.3
 PyDispatcher==2.0.5
 picamera==1.13
 git+git://github.com/adafruit/Adafruit_Python_DHT#egg=Adafruit_DHT
 boto3==1.9.27
-awscli==1.16.37
 pycodestyle==2.4.0
 mock==2.0.0
+pyvesync==1.0.10
+RPi.GPIO==0.6.5
